@@ -19,7 +19,7 @@ class DocumentController extends Controller
     public function paymentProof(Request $request, TeamDocuments $teamDocuments)
     {
         $this->validate($request, [
-        	'payment_proof' => 'required|image', 
+        	'payment_proof' => 'required|image|max:1024', 
         ]);
 
         $payment_proof_file_name = bcrypt($request->payment_proof) . '.' . $request->payment_proof->getClientOriginalExtension();

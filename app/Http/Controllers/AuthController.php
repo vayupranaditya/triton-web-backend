@@ -28,7 +28,7 @@ class AuthController extends Controller
     		'team_member_2'	        => 'required',
     		'team_member_3'	        => 'required',
     		'team_member_4'         => 'nullable',
-            'active_student_proof'  => 'required|file|mimes:rar,zip',
+            'active_student_proof'  => 'required|file|mimes:rar,zip|max:3072',
     	]);
 
     	$user = $user->create([
@@ -47,7 +47,7 @@ class AuthController extends Controller
         $active_student_proof_file_name = str_replace('/', '', $active_student_proof_file_name);
         $active_student_proof_file_name = str_replace('.', '', $active_student_proof_file_name);
         $active_student_proof_file_name = $active_student_proof_file_name . '.' . $request->active_student_proof->getClientOriginalExtension();
-        
+
         $request->active_student_proof->storeAs('public/active-student-proofs', $active_student_proof_file_name);
 
         $teamDocument = $teamDocuments->create([
