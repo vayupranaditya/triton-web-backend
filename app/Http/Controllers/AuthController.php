@@ -39,20 +39,22 @@ class AuthController extends Controller
     		'team_member_2'	        => $request->team_member_2,
     		'team_member_3'	        => $request->team_member_3,
     		'team_member_4'	        => $request->team_member_4,
+            'api_token'             => bcrypt($request->email), 
     	]);
 
-        $active_student_proof_file_name = bcrypt($request->team_name) . 
-            '.' . 
-            $request->active_student_proof->getClientOriginalExtension();
-
-        $request->active_student_proof->storeAs('active_student_proof', $active_student_proof_file_name);
+        //renaming active_student_proof and saving it
+        $active_student_proof_file_name = bcrypt($request->team_name);
+        $active_student_proof_file_name = str_replace('/', '', $active_student_proof_file_name);
+        $active_student_proof_file_name = str_replace('.', '', $active_student_proof_file_name);
+        $active_student_proof_file_name = $active_student_proof_file_name . '.' . $request->active_student_proof->getClientOriginalExtension();
+        
+        $request->active_student_proof->storeAs('public/active-student-proofs', $active_student_proof_file_name);
 
         $teamDocument = $teamDocuments->create([
             'team_id'               => DB::table('users')
                 ->where('team_name',$request->team_name)
-                ->pluck('id')
-                [0],
-            'active_student_proof'  => $active_student_proof_file_name,
+                ->value('id'),
+            'active_student_proof'  => $active_student_proof_file_name, 
         ]);
 
     	$response = fractal()

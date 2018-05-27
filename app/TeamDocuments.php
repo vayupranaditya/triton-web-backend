@@ -7,7 +7,6 @@ use App\User;
 
 class TeamDocuments extends Model
 {
-	// protected $table = 'team_documents';
 	
     protected $fillable = [
     	'team_id', 

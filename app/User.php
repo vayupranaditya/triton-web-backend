@@ -23,6 +23,7 @@ class User extends Authenticatable
         'team_member_2', 
         'team_member_3', 
         'team_member_4', 
+        'api_token', 
     ];
 
     /**
