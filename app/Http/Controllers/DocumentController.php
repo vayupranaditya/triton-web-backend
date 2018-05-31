@@ -22,7 +22,7 @@ class DocumentController extends Controller
         	'payment_proof' => 'required|image|max:1024', 
         ]);
 
-        $payment_proof_file_name = bcrypt($request->payment_proof) . '.' . $request->payment_proof->getClientOriginalExtension();
+        $payment_proof_file_name = Auth::user()->team_name . '-' . substr(bcrypt($request->payment_proof),10,5) . '.' . $request->payment_proof->getClientOriginalExtension();
         $payment_proof_file_name = str_replace('/', '', $payment_proof_file_name);
 
         $request->payment_proof->storeAs('public/payment-proofs', $payment_proof_file_name);
@@ -41,10 +41,10 @@ class DocumentController extends Controller
     public function proposal(Request $request, TeamDocuments $teamDocuments)
     {
         $this->validate($request, [
-        	'proposal' => 'required|file|mimes:pdf', 
+        	'proposal' => 'required|file|mimes:pdf|max:5120', 
         ]);
 
-        $proposal_file_name = bcrypt($request->proposal) . '.' . $request->proposal->getClientOriginalExtension();
+        $proposal_file_name = Auth::user()->team_name . '-' . substr(bcrypt($request->proposal),10,5) . '.' . $request->proposal->getClientOriginalExtension();
         $proposal_file_name = str_replace('/', '', $proposal_file_name);
 
         $request->proposal->storeAs('public/proposals', $proposal_file_name);
